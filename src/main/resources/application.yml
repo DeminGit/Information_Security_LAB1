@@ -1,0 +1,28 @@
+logging:
+  level:
+    org.springframework: INFO
+spring:
+  application:
+    name: secure-notes
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/secure_notes}
+    username: ${POSTGRES_USER:secure_notes}
+    password: ${POSTGRES_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+server:
+  error:
+    include-message: never
+    include-stacktrace: never
+    include-binding-errors: never
+  max-http-request-header-size: 8KB
+  tomcat:
+    max-http-form-post-size: 16KB
+  forward-headers-strategy: none
+app:
+  jwt-secret: ${JWT_SECRET}
+  bootstrap-username: ${BOOTSTRAP_USERNAME:student}
+  bootstrap-password: ${BOOTSTRAP_PASSWORD}

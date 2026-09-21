@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <!-- Informational attack-surface inventory, not a vulnerability. Only our reviewed controller. -->
+  <Match>
+    <Class name="ru.demin.securenotes.ApiController"/>
+    <Bug pattern="SPRING_ENDPOINT"/>
+  </Match>
+  <!-- Stateless Authorization: Bearer only; no cookies, HTTP Basic or form login.
+       Cross-origin credential submission is not enabled. See docs/security-review.md. -->
+  <Match>
+    <Class name="ru.demin.securenotes.SecurityConfig"/>
+    <Bug pattern="SPRING_CSRF_PROTECTION_DISABLED"/>
+  </Match>
+</FindBugsFilter>

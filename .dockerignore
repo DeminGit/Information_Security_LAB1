@@ -1,0 +1,6 @@
+.git
+.idea
+.env*
+.local
+target
+docs

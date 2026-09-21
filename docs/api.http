@@ -1,0 +1,34 @@
+### IntelliJ HTTP Client: supply username/password in http-client.private.env.json (ignored by Git).
+@baseUrl = http://localhost:8080
+
+### Must return 401
+GET {{baseUrl}}/api/data
+
+### Login: stores the access token in the HTTP Client's memory
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{"username":"{{username}}","password":"{{password}}"}
+
+> {% client.global.set("token", response.body.accessToken); %}
+
+### Create a note (201); HTML must be escaped in the response
+POST {{baseUrl}}/api/data
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title":"<script>alert(1)</script>","content":"My private note"}
+
+### Read only the current user's notes (200)
+GET {{baseUrl}}/api/data?limit=20
+Authorization: Bearer {{token}}
+
+### SQL injection must return 401
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{"username":"' OR '1'='1' --","password":"incorrect-password"}
+
+### Invalid JWT must return 401
+GET {{baseUrl}}/api/data
+Authorization: Bearer invalid-token

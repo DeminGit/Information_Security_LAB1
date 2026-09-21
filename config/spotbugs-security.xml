@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <!-- This gate covers every SECURITY finding, including low confidence findings. -->
+  <Match><Bug category="SECURITY"/></Match>
+</FindBugsFilter>
