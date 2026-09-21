@@ -39,7 +39,7 @@ jobs:
         run: mvn -B -ntp verify
       - name: Publish tests and SAST reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: tests-and-sast
           path: |
@@ -72,7 +72,7 @@ jobs:
         run: mvn -B -ntp -Psca -DskipTests dependency-check:check
       - name: Publish SCA reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dependency-check
           path: target/dependency-check-report.*
