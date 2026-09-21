@@ -6,7 +6,7 @@ COPY src src
 COPY config config
 RUN mvn -B -ntp -DskipTests package
 
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 RUN addgroup -S app && adduser -S app -G app
 WORKDIR /app
 COPY --from=build /build/target/secure-notes-1.0.0.jar app.jar
