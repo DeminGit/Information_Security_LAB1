@@ -1,0 +1,10 @@
+target/
+.idea/
+*.iml
+.env
+.env.*
+!.env.example
+.local/
+*.log
+.DS_Store
+http-client.private.env.json

@@ -1,0 +1,39 @@
+name: security-lab1
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-secure_notes}
+      POSTGRES_USER: ${POSTGRES_USER:-secure_notes}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run scripts/init-local.ps1 first}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+  app:
+    build: .
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-secure_notes}
+      POSTGRES_USER: ${POSTGRES_USER:-secure_notes}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run scripts/init-local.ps1 first}
+      JWT_SECRET: ${JWT_SECRET:?Run scripts/init-local.ps1 first}
+      BOOTSTRAP_USERNAME: ${BOOTSTRAP_USERNAME:-student}
+      BOOTSTRAP_PASSWORD: ${BOOTSTRAP_PASSWORD:?Run scripts/init-local.ps1 first}
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 512m
+    restart: unless-stopped
+volumes:
+  postgres-data:
